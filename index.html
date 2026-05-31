@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Himanshu Gupta | DevSecOps Platform Lead</title>
+    <meta name="description" content="DevSecOps Platform Lead specializing in Kubernetes, AWS, CI/CD Security, and AI-driven infrastructure automation.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1a2332;
+            --bg-code: #0d1117;
+            --accent: #00d4ff;
+            --accent-glow: rgba(0, 212, 255, 0.15);
+            --accent-green: #00ff88;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: #1e293b;
+            --gradient-1: linear-gradient(135deg, #00d4ff, #a855f7);
+            --gradient-2: linear-gradient(135deg, #00ff88, #00d4ff);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10, 14, 23, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0.8rem 0;
+        }
+        nav .container {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-size: 1.3rem; font-weight: 700;
+            background: var(--gradient-1); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.9rem; font-weight: 500;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .hamburger span { width: 25px; height: 2px; background: var(--text-primary); transition: 0.3s; }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding: 6rem 2rem 4rem;
+            background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(168,85,247,0.06) 0%, transparent 50%);
+        }
+        .hero .container { max-width: 1200px; margin: 0 auto; width: 100%; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.4rem 1rem; border-radius: 50px;
+            background: var(--accent-glow); border: 1px solid rgba(0,212,255,0.3);
+            font-size: 0.8rem; color: var(--accent); margin-bottom: 1.5rem;
+        }
+        .hero-badge .dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1rem; }
+        .hero h1 .gradient { background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.15rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 2rem; }
+        .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn {
+            padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;
+            text-decoration: none; font-size: 0.9rem; transition: all 0.3s;
+            cursor: pointer; border: none; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary { background: var(--gradient-1); color: #000; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,255,0.3); }
+        .btn-outline { border: 1px solid var(--border); color: var(--text-primary); background: transparent; }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .hero-stats {
+            display: flex; gap: 3rem; margin-top: 3rem;
+            padding-top: 2rem; border-top: 1px solid var(--border);
+        }
+        .stat-num { font-size: 2rem; font-weight: 800; background: var(--gradient-2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ===== SECTIONS ===== */
+        section { padding: 5rem 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-header { margin-bottom: 3rem; }
+        .section-tag {
+            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .section-title { font-size: 2.2rem; font-weight: 700; }
+
+        /* ===== ABOUT ===== */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+        .about-text p { color: var(--text-secondary); margin-bottom: 1rem; }
+        .about-highlights { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .highlight-card {
+            padding: 1.2rem; border-radius: 12px;
+            background: var(--bg-card); border: 1px solid var(--border);
+        }
+        .highlight-card .icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .highlight-card h4 { font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .highlight-card p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* ===== EXPERIENCE ===== */
+        .timeline { position: relative; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+            width: 2px; background: var(--border);
+        }
+        .timeline-item {
+            padding-left: 2.5rem; margin-bottom: 2.5rem; position: relative;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -5px; top: 6px;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--accent); border: 3px solid var(--bg-primary);
+        }
+        .timeline-item.current::before { box-shadow: 0 0 0 4px var(--accent-glow); animation: pulse 2s infinite; }
+        .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .timeline-company { font-size: 1.1rem; font-weight: 700; color: var(--text-primary); }
+        .timeline-role { font-size: 0.95rem; color: var(--accent); font-weight: 500; }
+        .timeline-date { font-size: 0.8rem; color: var(--text-muted); }
+        .timeline-item ul { list-style: none; margin-top: 0.5rem; }
+        .timeline-item li {
+            position: relative; padding-left: 1.2rem; margin-bottom: 0.4rem;
+            font-size: 0.88rem; color: var(--text-secondary);
+        }
+        .timeline-item li::before { content: '▹'; position: absolute; left: 0; color: var(--accent); }
+
+        /* ===== SKILLS ===== */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .skill-category {
+            padding: 1.5rem; border-radius: 12px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: border-color 0.3s;
+        }
+        .skill-category:hover { border-color: var(--accent); }
+        .skill-category h3 { font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .skill-tag {
+            padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.78rem;
+            background: rgba(0,212,255,0.08); color: var(--accent);
+            border: 1px solid rgba(0,212,255,0.15);
+        }
+
+        /* ===== CODE SNIPPETS ===== */
+        .snippets-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .snippet-card {
+            border-radius: 12px; overflow: hidden;
+            background: var(--bg-card); border: 1px solid var(--border);
+        }
+        .snippet-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .snippet-title { font-weight: 600; font-size: 0.95rem; }
+        .snippet-lang {
+            padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem;
+            background: rgba(168,85,247,0.15); color: var(--accent-purple);
+        }
+        .snippet-card pre {
+            margin: 0 !important; border-radius: 0 !important;
+            font-size: 0.82rem !important;
+        }
+        .snippet-card code { font-family: 'JetBrains Mono', monospace !important; }
+        .snippet-desc { padding: 1rem 1.5rem; font-size: 0.85rem; color: var(--text-secondary); border-top: 1px solid var(--border); }
+        .snippet-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
+        .snippet-tab {
+            padding: 0.6rem 1.2rem; cursor: pointer; font-size: 0.8rem;
+            color: var(--text-muted); border-bottom: 2px solid transparent;
+            transition: all 0.3s; background: none; border-top: none; border-left: none; border-right: none;
+        }
+        .snippet-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        .snippet-content { display: none; }
+        .snippet-content.active { display: block; }
+
+        /* ===== BLOG ===== */
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+        .blog-card {
+            padding: 1.5rem; border-radius: 12px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.3s; cursor: pointer;
+        }
+        .blog-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+        .blog-tag {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--accent-green); margin-bottom: 0.8rem;
+        }
+        .blog-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .blog-card p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .blog-meta { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* ===== CERTIFICATIONS ===== */
+        .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .cert-card {
+            padding: 1.5rem; border-radius: 12px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            display: flex; gap: 1rem; align-items: flex-start;
+        }
+        .cert-icon {
+            width: 48px; height: 48px; border-radius: 10px;
+            background: var(--accent-glow); display: flex; align-items: center;
+            justify-content: center; font-size: 1.5rem; flex-shrink: 0;
+        }
+        .cert-info h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+        .cert-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* ===== PROJECTS ===== */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+        .project-card {
+            padding: 1.5rem; border-radius: 12px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: border-color 0.3s;
+        }
+        .project-card:hover { border-color: var(--accent); }
+        .project-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .project-card p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .project-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .project-tech span {
+            padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.7rem;
+            background: rgba(0,255,136,0.08); color: var(--accent-green);
+            border: 1px solid rgba(0,255,136,0.15);
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .contact-info h3 { font-size: 1.3rem; margin-bottom: 1rem; }
+        .contact-info p { color: var(--text-secondary); margin-bottom: 1.5rem; }
+        .contact-links { display: flex; flex-direction: column; gap: 0.8rem; }
+        .contact-link {
+            display: flex; align-items: center; gap: 0.8rem;
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.95rem; transition: color 0.3s;
+        }
+        .contact-link:hover { color: var(--accent); }
+        .contact-link .icon-circle {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--bg-card); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+        .contact-form input, .contact-form textarea {
+            padding: 0.8rem 1rem; border-radius: 8px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-primary); font-family: 'Inter', sans-serif;
+            font-size: 0.9rem; outline: none; transition: border-color 0.3s;
+        }
+        .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent); }
+        .contact-form textarea { min-height: 120px; resize: vertical; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            padding: 2rem; text-align: center;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem; color: var(--text-muted);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-primary); flex-direction: column; padding: 1rem 2rem; border-bottom: 1px solid var(--border); }
+            .nav-links.open { display: flex; }
+            .hamburger { display: flex; }
+            .timeline::before { left: 0; }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="container">
+        <a href="#" class="logo">&lt;HG /&gt;</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#snippets">Code Lab</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#certs">Certs</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-badge"><span class="dot"></span> Open to opportunities</div>
+        <h1>Hi, I'm <span class="gradient">Himanshu Gupta</span></h1>
+        <h1 style="font-size:1.8rem; font-weight:600; color:var(--text-secondary); margin-bottom:1rem;">
+            Platform Lead &middot; DevSecOps Engineer &middot; Cloud Architect
+        </h1>
+        <p>I build secure, scalable cloud platforms. 10+ years turning complex infrastructure into automated, zero-trust systems at companies like PayPal, Charter Communications, and Silicon Valley Bank.</p>
+        <div class="hero-cta">
+            <a href="#contact" class="btn btn-primary">Get In Touch</a>
+            <a href="#snippets" class="btn btn-outline">View Code Lab &rarr;</a>
+        </div>
+        <div class="hero-stats">
+            <div><div class="stat-num">10+</div><div class="stat-label">Years Experience</div></div>
+            <div><div class="stat-num">100+</div><div class="stat-label">Microservices Managed</div></div>
+            <div><div class="stat-num">20+</div><div class="stat-label">EKS Clusters</div></div>
+            <div><div class="stat-num">99.9%</div><div class="stat-label">Uptime Achieved</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">About Me</div>
+            <h2 class="section-title">Building Secure Platforms at Scale</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>I'm a DevSecOps Platform Lead with a deep passion for building infrastructure that's not just scalable, but secure by design. My journey spans from writing my first Ansible playbook at Accenture to leading multi-account Kubernetes platform strategy at Charter Communications.</p>
+                <p>I specialize in Kubernetes (EKS/CAPA), CI/CD pipeline security, Infrastructure as Code, and cloud-native architecture across AWS and Azure. I'm currently exploring the intersection of AI/ML and DevOps - using machine learning for anomaly detection, intelligent alerting, and automated remediation.</p>
+                <p>Recently relocated to Hyderabad, India, and open to remote/global opportunities in DevSecOps leadership, Platform Engineering, and AI-driven infrastructure roles.</p>
+            </div>
+            <div class="about-highlights">
+                <div class="highlight-card">
+                    <div class="icon">🛡️</div>
+                    <h4>Security-First</h4>
+                    <p>Zero-trust architecture, WAF rules, YARA signatures, secrets management</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="icon">☸️</div>
+                    <h4>K8s Platform</h4>
+                    <p>Multi-account EKS with CAPA, Helm, GitOps, service mesh</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="icon">🤖</div>
+                    <h4>AI + DevOps</h4>
+                    <p>ML-powered monitoring, anomaly detection, intelligent automation</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="icon">🔄</div>
+                    <h4>CI/CD Expert</h4>
+                    <p>GitLab CI, Jenkins, GitOps workflows with integrated security scanning</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="background: var(--bg-secondary);" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Career</div>
+            <h2 class="section-title">Professional Experience</h2>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item current">
+                <div class="timeline-header">
+                    <div>
+                        <div class="timeline-company">Charter Communications</div>
+                        <div class="timeline-role">Sr. DevSecOps Engineer / Platform Lead</div>
+                    </div>
+                    <div class="timeline-date">Oct 2022 - Present</div>
+                </div>
+                <ul>
+                    <li>Led Kubernetes platform strategy across multi-account AWS using CAPA, managing 20+ EKS clusters</li>
+                    <li>Architected DR framework achieving RTO &lt; 30min and RPO &lt; 5min</li>
+                    <li>Designed zero-trust bastion architecture, reducing attack surface by 70%</li>
+                    <li>Built GitLab CI/CD with integrated security scanning across 50+ repositories</li>
+                    <li>Integrated AWS KMS + Secrets Manager with least-privilege IAM policies</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div>
+                        <div class="timeline-company">PayPal</div>
+                        <div class="timeline-role">Sr. Cloud / DevOps Engineer</div>
+                    </div>
+                    <div class="timeline-date">Sep 2020 - Oct 2022</div>
+                </div>
+                <ul>
+                    <li>Spearheaded on-prem to AWS migration, containerizing 30+ Java applications</li>
+                    <li>Implemented LDAP-based SSO and centralized authentication</li>
+                    <li>Built GitOps workflows with full lifecycle CI/CD pipelines</li>
+                    <li>Automated Datadog/Splunk monitoring for 30+ microservices</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div>
+                        <div class="timeline-company">Silicon Valley Bank</div>
+                        <div class="timeline-role">Sr. Cloud / DevOps Engineer</div>
+                    </div>
+                    <div class="timeline-date">Mar 2019 - Aug 2020</div>
+                </div>
+                <ul>
+                    <li>Built NGINX WAF and YARA rules for automated threat detection</li>
+                    <li>Deployed HashiCorp Vault on AWS and on-prem for secrets management</li>
+                    <li>Implemented ELK Stack with CloudWatch + Lambda integration</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div>
+                        <div class="timeline-company">HGST (Western Digital)</div>
+                        <div class="timeline-role">Cloud / DevOps Engineer</div>
+                    </div>
+                    <div class="timeline-date">Apr 2018 - Feb 2019</div>
+                </div>
+                <ul>
+                    <li>Azure infrastructure with Site Recovery and automated backup strategies</li>
+                    <li>Kubernetes clusters with Ansible-automated provisioning and Helm charts</li>
+                </ul>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div>
+                        <div class="timeline-company">Accenture</div>
+                        <div class="timeline-role">DevOps Engineer</div>
+                    </div>
+                    <div class="timeline-date">Jun 2016 - Dec 2017</div>
+                </div>
+                <ul>
+                    <li>AWS IaaS with multi-zone infrastructure and Ansible/CloudFormation automation</li>
+                    <li>Python/Lambda automation reducing infrastructure costs by 40%</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Expertise</div>
+            <h2 class="section-title">Technical Skills</h2>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3>☸️ Container & Orchestration</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Kubernetes</span>
+                    <span class="skill-tag">EKS</span>
+                    <span class="skill-tag">CAPA</span>
+                    <span class="skill-tag">KOPS</span>
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">Helm</span>
+                    <span class="skill-tag">ArgoCD</span>
+                    <span class="skill-tag">Istio</span>
+                </div>
+            </div>
+            <div class="skill-category">
+                <h3>☁️ Cloud Platforms</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">AWS</span>
+                    <span class="skill-tag">Azure</span>
+                    <span class="skill-tag">EC2</span>
+                    <span class="skill-tag">Lambda</span>
+                    <span class="skill-tag">S3</span>
+                    <span class="skill-tag">RDS</span>
+                    <span class="skill-tag">VPC</span>
+                    <span class="skill-tag">CloudFormation</span>
+                </div>
+            </div>
+            <div class="skill-category">
+                <h3>🛡️ Security</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">DevSecOps</span>
+                    <span class="skill-tag">WAF</span>
+                    <span class="skill-tag">Vault</span>
+                    <span class="skill-tag">KMS</span>
+                    <span class="skill-tag">IAM/RBAC</span>
+                    <span class="skill-tag">LDAP</span>
+                    <span class="skill-tag">YARA</span>
+                    <span class="skill-tag">Zero Trust</span>
+                </div>
+            </div>
+            <div class="skill-category">
+                <h3>🔧 IaC & Config Management</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Terraform</span>
+                    <span class="skill-tag">Ansible</span>
+                    <span class="skill-tag">Chef</span>
+                    <span class="skill-tag">Puppet</span>
+                    <span class="skill-tag">Packer</span>
+                    <span class="skill-tag">CloudFormation</span>
+                </div>
+            </div>
+            <div class="skill-category">
+                <h3>🔄 CI/CD & GitOps</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">GitLab CI</span>
+                    <span class="skill-tag">Jenkins</span>
+                    <span class="skill-tag">GitHub Actions</span>
+                    <span class="skill-tag">Concourse CI</span>
+                    <span class="skill-tag">GitOps</span>
+                    <span class="skill-tag">Artifactory</span>
+                </div>
+            </div>
+            <div class="skill-category">
+                <h3>📊 Observability</h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Datadog</span>
+                    <span class="skill-tag">Splunk</span>
+                    <span class="skill-tag">ELK Stack</span>
+                    <span class="skill-tag">Prometheus</span>
+                    <span class="skill-tag">Grafana</span>
+                    <span class="skill-tag">CloudWatch</span>
+                    <span class="skill-tag">New Relic</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="background: var(--bg-secondary);" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Portfolio</div>
+            <h2 class="section-title">Featured Projects</h2>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>🏗️ Multi-Account EKS Platform (CAPA)</h3>
+                <p>Enterprise Kubernetes platform managing 20+ clusters across multiple AWS accounts using Cluster API Provider. Includes automated provisioning, DR, and GitOps-based deployments.</p>
+                <div class="project-tech">
+                    <span>Kubernetes</span><span>CAPA</span><span>Terraform</span><span>GitLab CI</span><span>Helm</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <h3>🔐 Zero-Trust Infrastructure</h3>
+                <p>Designed and deployed bastion host architecture with IAM integration, network segmentation, KMS encryption, and automated vulnerability scanning across all environments.</p>
+                <div class="project-tech">
+                    <span>AWS IAM</span><span>KMS</span><span>VPC</span><span>WAF</span><span>Vault</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <h3>🚀 Cloud Migration Engine</h3>
+                <p>Led migration of 30+ on-prem Java applications to AWS containers at PayPal. Windows Tomcat to Linux Docker with full automation documentation and SOPs.</p>
+                <div class="project-tech">
+                    <span>Docker</span><span>AWS ECS</span><span>Terraform</span><span>Ansible</span><span>Python</span>
+                </div>
+            </div>
+            <div class="project-card">
+                <h3>🤖 AI-Powered Monitoring (POC)</h3>
+                <p>Proof of concept integrating ML models with Datadog/CloudWatch for anomaly detection, intelligent alerting, and automated remediation workflows.</p>
+                <div class="project-tech">
+                    <span>Python</span><span>Lambda</span><span>CloudWatch</span><span>ML</span><span>Datadog</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CODE SNIPPETS -->
+<section id="snippets" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Code Lab</div>
+            <h2 class="section-title">Infrastructure Templates & Examples</h2>
+            <p style="color:var(--text-secondary); margin-top:0.5rem;">Production-ready templates I use in my daily work. Feel free to adapt them.</p>
+        </div>
+        <div class="snippets-grid">
+
+            <!-- Snippet 1: K8s Deployment -->
+            <div class="snippet-card">
+                <div class="snippet-header">
+                    <span class="snippet-title">Secure K8s Deployment with Health Checks</span>
+                    <span class="snippet-lang">YAML</span>
+                </div>
+                <pre><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-api
+  labels:
+    app: secure-api
+    security.policy/scan: "true"
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: secure-api
+  template:
+    metadata:
+      labels:
+        app: secure-api
+    spec:
+      serviceAccountName: secure-api-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+      - name: api
+        image: registry.example.com/api:v1.2.0
+        ports:
+        - containerPort: 8080
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        env:
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: password
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values: ["secure-api"]
+              topologyKey: "topology.kubernetes.io/zone"</code></pre>
+                <div class="snippet-desc">Production-ready deployment with security context, resource limits, anti-affinity for multi-AZ spread, and health probes.</div>
+            </div>
+
+            <!-- Snippet 2: GitLab CI/CD -->
+            <div class="snippet-card">
+                <div class="snippet-header">
+                    <span class="snippet-title">GitLab CI/CD with Security Scanning</span>
+                    <span class="snippet-lang">.gitlab-ci.yml</span>
+                </div>
+                <pre><code class="language-yaml">stages:
+  - test
+  - security
+  - build
+  - deploy
+
+variables:
+  DOCKER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
+unit-tests:
+  stage: test
+  image: python:3.11-slim
+  script:
+    - pip install -r requirements.txt
+    - pytest tests/ --cov=src --cov-report=xml
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+
+sast-scan:
+  stage: security
+  image: registry.gitlab.com/security-products/sast:latest
+  script:
+    - /analyzer run
+  artifacts:
+    reports:
+      sast: gl-sast-report.json
+  allow_failure: false
+
+container-scan:
+  stage: security
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t $DOCKER_IMAGE .
+    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock
+        aquasec/trivy image --exit-code 1
+        --severity HIGH,CRITICAL $DOCKER_IMAGE
+
+build-push:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
+  only:
+    - main
+
+deploy-eks:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - kubectl set image deployment/app app=$DOCKER_IMAGE -n production
+    - kubectl rollout status deployment/app -n production --timeout=300s
+  environment:
+    name: production
+  when: manual
+  only:
+    - main</code></pre>
+                <div class="snippet-desc">Full CI/CD pipeline with SAST scanning, container vulnerability scanning (Trivy), and staged deployment to EKS.</div>
+            </div>
+
+            <!-- Snippet 3: Terraform EKS -->
+            <div class="snippet-card">
+                <div class="snippet-header">
+                    <span class="snippet-title">Terraform EKS Cluster Module</span>
+                    <span class="snippet-lang">HCL</span>
+                </div>
+                <pre><code class="language-hcl">module "eks" {
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 19.0"
+
+  cluster_name    = var.cluster_name
+  cluster_version = "1.28"
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+
+  cluster_endpoint_public_access  = false
+  cluster_endpoint_private_access = true
+
+  # Encryption at rest
+  cluster_encryption_config = {
+    provider_key_arn = aws_kms_key.eks.arn
+    resources        = ["secrets"]
+  }
+
+  # Managed node groups
+  eks_managed_node_groups = {
+    general = {
+      desired_size = 3
+      min_size     = 2
+      max_size     = 10
+
+      instance_types = ["m6i.xlarge"]
+      capacity_type  = "ON_DEMAND"
+
+      labels = {
+        role        = "general"
+        environment = var.environment
+      }
+
+      update_config = {
+        max_unavailable_percentage = 33
+      }
+    }
+
+    spot = {
+      desired_size = 2
+      min_size     = 1
+      max_size     = 8
+
+      instance_types = ["m6i.xlarge", "m5.xlarge", "m5a.xlarge"]
+      capacity_type  = "SPOT"
+
+      labels = {
+        role = "spot-workloads"
+      }
+
+      taints = [{
+        key    = "spot"
+        value  = "true"
+        effect = "NO_SCHEDULE"
+      }]
+    }
+  }
+
+  # IRSA for pod-level IAM
+  enable_irsa = true
+
+  tags = merge(var.common_tags, {
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+  })
+}
+
+resource "aws_kms_key" "eks" {
+  description = "EKS Secret Encryption Key"
+  policy      = data.aws_iam_policy_document.eks_kms.json
+}</code></pre>
+                <div class="snippet-desc">Production EKS cluster with private endpoints, KMS encryption, mixed node groups (on-demand + spot), and IRSA enabled.</div>
+            </div>
+
+            <!-- Snippet 4: Network Policy -->
+            <div class="snippet-card">
+                <div class="snippet-header">
+                    <span class="snippet-title">K8s Network Policy - Zero Trust</span>
+                    <span class="snippet-lang">YAML</span>
+                </div>
+                <pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: api-network-policy
+  namespace: production
+spec:
+  podSelector:
+    matchLabels:
+      app: secure-api
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+        - podSelector:
+            matchLabels:
+              app: frontend
+      ports:
+        - protocol: TCP
+          port: 8080
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: postgres
+      ports:
+        - protocol: TCP
+          port: 5432
+    - to:  # Allow DNS
+        - namespaceSelector: {}
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53</code></pre>
+                <div class="snippet-desc">Zero-trust network policy: only allows ingress from nginx ingress and frontend, egress only to postgres and DNS.</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" style="background: var(--bg-secondary);" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Writing</div>
+            <h2 class="section-title">Blog</h2>
+        </div>
+        <div class="blog-grid">
+            <a href="blog-k8s-networking.html" class="blog-card" style="text-decoration:none; color:inherit;">
+                <div class="blog-tag">Kubernetes</div>
+                <h3>K8s Networking: NodePort vs LoadBalancer vs Ingress</h3>
+                <p>A visual cheat-sheet and decision tree for choosing the right way to expose your Kubernetes applications.</p>
+                <div class="blog-meta">June 2026 &middot; 6 min read</div>
+            </a>
+            <a href="blog-devsecops-cicd.html" class="blog-card" style="text-decoration:none; color:inherit;">
+                <div class="blog-tag">DevSecOps</div>
+                <h3>Shift-Left Security: Building Secure CI/CD Pipelines That Actually Work</h3>
+                <p>How I built security-first GitLab CI/CD pipelines with SAST, container scanning, and dependency checks.</p>
+                <div class="blog-meta">June 2026 &middot; 8 min read</div>
+            </a>
+            <a href="blog-ai-devops.html" class="blog-card" style="text-decoration:none; color:inherit;">
+                <div class="blog-tag">AI + DevOps</div>
+                <h3>Using ML for Anomaly Detection in Infrastructure Monitoring</h3>
+                <p>Building intelligent alerting with Isolation Forest and Lambda that learns from your infrastructure patterns.</p>
+                <div class="blog-meta">June 2026 &middot; 10 min read</div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Credentials</div>
+            <h2 class="section-title">Certifications & Education</h2>
+        </div>
+        <div class="certs-grid">
+            <div class="cert-card">
+                <div class="cert-icon">🎓</div>
+                <div class="cert-info">
+                    <h4>M.S. Computer Science</h4>
+                    <p>California State University, Fresno &middot; 2018-2020</p>
+                </div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-icon">🎓</div>
+                <div class="cert-info">
+                    <h4>B.Tech Computer Science</h4>
+                    <p>JECRC University, Jaipur &middot; 2012-2016</p>
+                </div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-icon">☸️</div>
+                <div class="cert-info">
+                    <h4>AWS EKS Masterclass</h4>
+                    <p>Udemy &middot; Feb 2024</p>
+                </div>
+            </div>
+            <div class="cert-card">
+                <div class="cert-icon">🔄</div>
+                <div class="cert-info">
+                    <h4>GitLab CI/CD Hands-On (50+ Pipelines)</h4>
+                    <p>Udemy &middot; Mar 2024</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background: var(--bg-secondary);" class="fade-in">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Get In Touch</div>
+            <h2 class="section-title">Let's Work Together</h2>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Open to Opportunities</h3>
+                <p>I'm currently looking for DevSecOps leadership, Platform Engineering, and AI/ML Ops roles. Based in Hyderabad, India, and open to remote/global opportunities.</p>
+                <div class="contact-links">
+                    <a href="mailto:himdevops5@gmail.com" class="contact-link">
+                        <span class="icon-circle">📧</span> himdevops5@gmail.com
+                    </a>
+                    <a href="https://www.linkedin.com/in/himz" target="_blank" class="contact-link">
+                        <span class="icon-circle">💼</span> linkedin.com/in/himz
+                    </a>
+                    <a href="#" class="contact-link">
+                        <span class="icon-circle">📍</span> Hyderabad, India
+                    </a>
+                </div>
+            </div>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Form submission would be connected to your backend. For now, reach out via email!');">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <input type="text" placeholder="Subject">
+                <textarea placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn btn-primary" style="width:fit-content;">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>Built with passion by Himanshu Gupta &middot; 2026 &middot; DevSecOps | Cloud | AI</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-hcl.min.js"></script>
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Snippet tabs
+document.querySelectorAll('.snippet-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const parent = tab.closest('.snippet-card');
+        parent.querySelectorAll('.snippet-tab').forEach(t => t.classList.remove('active'));
+        parent.querySelectorAll('.snippet-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        parent.querySelector(`#${tab.dataset.target}`).classList.add('active');
+    });
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('navLinks').classList.remove('open');
+    });
+});
+</script>
+</body>
+</html>

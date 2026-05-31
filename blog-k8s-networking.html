@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K8s Networking: NodePort vs LoadBalancer vs Ingress | Himanshu Gupta</title>
+    <meta name="description" content="A visual guide to Kubernetes networking: when to use NodePort, LoadBalancer, or Ingress for your applications.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0e17; --bg-secondary: #111827; --bg-card: #1a2332;
+            --accent: #00d4ff; --accent-green: #00ff88; --accent-purple: #a855f7;
+            --accent-orange: #f97316; --accent-red: #ef4444;
+            --text-primary: #e2e8f0; --text-secondary: #94a3b8; --text-muted: #64748b;
+            --border: #1e293b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.8; }
+
+        /* Nav */
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(10,14,23,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0.8rem 0; }
+        nav .container { max-width: 800px; margin: 0 auto; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.3rem; font-weight: 700; background: linear-gradient(135deg, #00d4ff, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+        .back-link { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { color: var(--accent); }
+
+        /* Article */
+        .article { max-width: 800px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+        .article-meta { margin-bottom: 2rem; }
+        .article-tag { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 50px; background: rgba(0,212,255,0.1); color: var(--accent); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 1rem; }
+        .article h1 { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+        .article-date { font-size: 0.85rem; color: var(--text-muted); }
+        .article h2 { font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem; color: var(--accent); }
+        .article h3 { font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.8rem; }
+        .article p { color: var(--text-secondary); margin-bottom: 1.2rem; }
+        .article strong { color: var(--text-primary); }
+        .article code { font-family: 'JetBrains Mono', monospace; background: var(--bg-card); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85em; color: var(--accent); }
+        .article pre { margin: 1.5rem 0; border-radius: 10px; border: 1px solid var(--border); overflow-x: auto; }
+        .article pre code { padding: 1.2rem; display: block; background: var(--bg-card); font-size: 0.82rem; color: var(--text-primary); }
+
+        /* Comparison cards */
+        .comparison-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin: 2rem 0; }
+        .compare-card { padding: 1.5rem; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); }
+        .compare-card.nodeport { border-top: 3px solid var(--accent); }
+        .compare-card.loadbalancer { border-top: 3px solid var(--accent-green); }
+        .compare-card.ingress { border-top: 3px solid var(--accent-purple); }
+        .compare-card h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .compare-card .subtitle { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 1rem; }
+        .compare-card .flow { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent); background: rgba(0,212,255,0.05); padding: 0.6rem; border-radius: 6px; margin: 0.8rem 0; }
+        .compare-card ul { list-style: none; margin: 0.8rem 0; }
+        .compare-card li { font-size: 0.82rem; color: var(--text-secondary); padding: 0.2rem 0; padding-left: 1.2rem; position: relative; }
+        .compare-card li::before { content: '▹'; position: absolute; left: 0; color: var(--accent); }
+        .best-for { display: inline-block; padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; margin-top: 0.5rem; }
+        .nodeport .best-for { background: rgba(0,212,255,0.1); color: var(--accent); border: 1px solid rgba(0,212,255,0.2); }
+        .loadbalancer .best-for { background: rgba(0,255,136,0.1); color: var(--accent-green); border: 1px solid rgba(0,255,136,0.2); }
+        .ingress .best-for { background: rgba(168,85,247,0.1); color: var(--accent-purple); border: 1px solid rgba(168,85,247,0.2); }
+
+        /* Decision tree */
+        .decision-box { padding: 1.5rem; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); margin: 2rem 0; }
+        .decision-box h3 { margin-bottom: 1rem; }
+        .decision-item { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 0.8rem; }
+        .decision-q { font-size: 0.85rem; color: var(--text-secondary); }
+        .decision-a { font-size: 0.85rem; font-weight: 600; }
+
+        /* Pros/Cons */
+        .pro { color: var(--accent-green); }
+        .con { color: var(--accent-red); }
+
+        /* CTA */
+        .article-cta { margin-top: 3rem; padding: 2rem; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border); text-align: center; }
+        .article-cta h3 { margin-bottom: 0.5rem; }
+        .article-cta p { font-size: 0.9rem; }
+        .article-cta a { color: var(--accent); text-decoration: none; font-weight: 600; }
+
+        footer { padding: 2rem; text-align: center; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-muted); margin-top: 3rem; }
+
+        @media (max-width: 768px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+            .article h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+<nav><div class="container"><a href="index.html" class="logo">&lt;HG /&gt;</a><a href="index.html#blog" class="back-link">&larr; Back to Blog</a></div></nav>
+
+<article class="article">
+    <div class="article-meta">
+        <span class="article-tag">Kubernetes</span>
+        <h1>K8s Networking: NodePort vs LoadBalancer vs Ingress</h1>
+        <div class="article-date">By Himanshu Gupta &middot; June 2026 &middot; 6 min read</div>
+    </div>
+
+    <p>One of the most confusing decisions for engineers new to Kubernetes: <strong>how do I expose my application?</strong> After managing 20+ EKS clusters at Charter Communications, here's my mental model for choosing the right approach every time.</p>
+
+    <h2>The Three Options at a Glance</h2>
+
+    <div class="comparison-grid">
+        <div class="compare-card nodeport">
+            <h3>NodePort</h3>
+            <div class="subtitle">Opens a port on every node</div>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">A Service type that exposes your app using a high port (30000-32767) on each worker node.</p>
+            <div class="flow">User → Node IP:30080 → Service → Pod</div>
+            <ul>
+                <li class="pro">Simple setup, no external dependencies</li>
+                <li class="pro">Works in any environment</li>
+                <li class="con">Not user-friendly (IP:port access)</li>
+                <li class="con">Hard to manage in production</li>
+            </ul>
+            <span class="best-for">Best for: Labs, testing, internal access</span>
+        </div>
+        <div class="compare-card loadbalancer">
+            <h3>LoadBalancer</h3>
+            <div class="subtitle">One public entry point per service</div>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">Asks your cloud provider to create an external load balancer (e.g. AWS ALB/NLB).</p>
+            <div class="flow">User → Load Balancer → Service → Pods</div>
+            <ul>
+                <li class="pro">Easy public access</li>
+                <li class="pro">Cloud-native integration</li>
+                <li class="con">One LB per service = expensive</li>
+                <li class="con">No path-based routing</li>
+            </ul>
+            <span class="best-for">Best for: Exposing one app publicly</span>
+        </div>
+        <div class="compare-card ingress">
+            <h3>Ingress</h3>
+            <div class="subtitle">Smart routing for many services</div>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">Manages HTTP/HTTPS traffic with clean URLs, path/host routing, and TLS termination.</p>
+            <div class="flow">User → LB → Ingress Controller → Service → Pods</div>
+            <ul>
+                <li class="pro">Clean URLs & path-based routing</li>
+                <li class="pro">TLS termination & cert management</li>
+                <li class="pro">Single entry point for many services</li>
+                <li class="con">Requires an Ingress Controller</li>
+            </ul>
+            <span class="best-for">Best for: Production HTTP/HTTPS</span>
+        </div>
+    </div>
+
+    <h2>When to Use What: Decision Tree</h2>
+
+    <div class="decision-box">
+        <h3>Quick Decision Guide</h3>
+        <div class="decision-item">
+            <div class="decision-q">Need to expose a service for local development or testing?</div>
+            <div class="decision-a" style="color:var(--accent);">→ NodePort</div>
+        </div>
+        <div class="decision-item">
+            <div class="decision-q">Need to expose a single TCP/UDP service (not HTTP) publicly?</div>
+            <div class="decision-a" style="color:var(--accent-green);">→ LoadBalancer</div>
+        </div>
+        <div class="decision-item">
+            <div class="decision-q">Need to expose multiple HTTP services with clean URLs?</div>
+            <div class="decision-a" style="color:var(--accent-purple);">→ Ingress</div>
+        </div>
+        <div class="decision-item">
+            <div class="decision-q">Need TLS termination and cert auto-renewal?</div>
+            <div class="decision-a" style="color:var(--accent-purple);">→ Ingress + cert-manager</div>
+        </div>
+        <div class="decision-item">
+            <div class="decision-q">Need advanced routing (canary, A/B, traffic splitting)?</div>
+            <div class="decision-a" style="color:var(--accent-orange);">→ Ingress + Istio or Gateway API</div>
+        </div>
+    </div>
+
+    <h2>Real-World Example: NodePort</h2>
+    <pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: my-app
+  ports:
+    - port: 80          # Service port (internal)
+      targetPort: 8080  # Container port
+      nodePort: 30080   # External port (30000-32767)
+# Access: http://&lt;any-node-ip&gt;:30080</code></pre>
+
+    <h2>Real-World Example: LoadBalancer</h2>
+    <pre><code class="language-yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-lb
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+spec:
+  type: LoadBalancer
+  selector:
+    app: my-app
+  ports:
+    - port: 443
+      targetPort: 8080
+      protocol: TCP
+# AWS provisions an NLB automatically
+# Access: http://&lt;lb-dns-name&gt;</code></pre>
+
+    <h2>Real-World Example: Ingress</h2>
+    <pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.myapp.com
+        - app.myapp.com
+      secretName: myapp-tls
+  rules:
+    - host: api.myapp.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 80
+    - host: app.myapp.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
+# Single LB serves multiple services via host/path routing</code></pre>
+
+    <h2>Pro Tip from Production</h2>
+    <p>At Charter, we use <strong>Ingress with AWS ALB Controller</strong> for all HTTP services and <strong>LoadBalancer (NLB)</strong> for gRPC and raw TCP workloads. The key insight: don't create one LoadBalancer per microservice. With 100+ services, that's 100 AWS load balancers at ~$20/month each = $24,000/year wasted. Use Ingress to fan out from a single entry point.</p>
+
+    <div class="article-cta">
+        <h3>Found this helpful?</h3>
+        <p>Check out more infrastructure templates in my <a href="index.html#snippets">Code Lab</a>, or connect on <a href="https://www.linkedin.com/in/himz" target="_blank">LinkedIn</a>.</p>
+    </div>
+</article>
+
+<footer><p>Himanshu Gupta &middot; 2026 &middot; DevSecOps | Cloud | AI</p></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+</body>
+</html>
